@@ -68,10 +68,10 @@ def train():
     dqn.compile(Adam(lr=1e-3), metrics=['mae'])
     history = dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
 
-    with open('cartpole_history.json', 'w') as f:
+    with open('data/cartpole_history.json', 'w') as f:
         json.dump(history.history, f)
 
-    dqn.save_weights('cartpole_dqn.hdf5')
+    dqn.save_weights('data/cartpole_dqn.hdf5')
 
 
 def test():
@@ -85,12 +85,12 @@ def test():
                    nb_steps_warmup=10, target_model_update=1e-2, policy=policy)
     dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
-    dqn.load_weights('cartpole_dqn.hdf5')
+    dqn.load_weights('data/cartpole_dqn.hdf5')
     dqn.test(env, nb_episodes=5, visualize=True)
     env.close()
 
     y = None
-    with open('cartpole_history.json', 'r') as f:
+    with open('data/cartpole_history.json', 'r') as f:
         y = json.load(f)
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -98,7 +98,7 @@ def test():
     ax.set_xlabel('episodes')
     ax.set_ylabel('rewards')
     ax.plot(y['episode_reward'])
-    plt.savefig('CartPole_DQN_rewards')
+    plt.savefig('data/CartPole_DQN_rewards')
     plt.show()
 
 
